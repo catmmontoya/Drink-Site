@@ -15,7 +15,7 @@ const createDrinkCard = (drinkObj) => {
 
   
   <section>
-    <button onclick="updateDrink(${drinkObj.id}, 'downvote)">-</button>
+    <button onclick="updateDrink(${drinkObj.id}, 'downvote')">-</button>
     Popularity: ${drinkObj.votes}
     <button onclick="updateDrink(${drinkObj.id}, 'upvote')">+</button>
     </section>
@@ -75,7 +75,16 @@ const deleteDrink = (id) => {
 
 //function to update the popularity votes of a drink
 //this function should accept both the drinks id and whether we are upvoting/downvoting
-const updateDrink = (id, type) => {};
+const updateDrink = (id, type) => {
+  let bodyObj = {
+    voteType: type,
+  };
+  //send a put request proving the bodyObj and a param for the drink's id
+  axios.put(`/updateDrink/${id}`, bodyObj).then((res) => {
+    drinkDisplay.innerHTML = "";
+    displayAllDrinks(res.data.allDrinks);
+  });
+};
 
 //add an evebt listener to drink form to fire a function (handleSubmit) when submitted
 drinkForm.addEventListener("submit", handleSubmit);

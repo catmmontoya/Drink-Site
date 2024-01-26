@@ -48,9 +48,32 @@ const handlerFunctions = {
         break;
       }
     }
-
     res.send({
       message: "Drink deleted",
+      allDrinks: drinks,
+    });
+  },
+
+  updateDrink: (req, res) => {
+    //grab the id from req.params
+    const drinkId = req.params.id;
+    //grab the type(upvote/downvote) from req.body
+    const voteType = req.body.voteType;
+
+    //grab the index of the drink using its id and the 'findIndex' array method
+    const drinkIdx = drinks.findIndex((drink) => {
+      return (drink.id = +drinkId);
+    });
+    //based on voteType, either increment or decrement the drink.votes property
+    if (voteType === "upvote") {
+      drinks[drinkIdx].votes += 1;
+    } else if (voteType === "downvote") {
+      drinks[drinkIdx].votes -= 1;
+    }
+
+    //send a response with all drinks again (drinks array will now have the new vote vaule as the drink)
+    res.send({
+      message: "Vote count updated",
       allDrinks: drinks,
     });
   },
